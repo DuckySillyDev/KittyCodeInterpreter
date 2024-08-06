@@ -1,14 +1,12 @@
 // import some packages for testing
-import('getKittyAPI')
+import('GetBirbAPI')
 
-// test getKittyAPI
-getKittyAPI.getKitty()
+// test getBirbAPI
+GetBirbAPI.getBirb()
 
 // log testing
 log('meow')
 log('meow')
 log('meow meow the meow')
-
-// meow() // spam "meow :3" (remove if bad cpu)
 
 // meow. this is a comment
