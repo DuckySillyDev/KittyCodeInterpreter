@@ -1,5 +1,5 @@
 # KittyCodeInterpreter
- Interpreted Programming language made by a idiot in his bedroom
+ The most janky broken programming language made by a idiot in his bedroom
  
 # **IN VERY EARLY DEVELOPMENT. VERY UNSTABLE**
 
@@ -23,4 +23,4 @@
   // another useless command explaining nothing
   ```
   
-  #### meow
+  #### to be honest i dont know if this even counts as a programming language
