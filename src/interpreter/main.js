@@ -7,39 +7,12 @@ const path = require("path");
 const { Command } = require("commander");
 const chalk = require("chalk");
 
-const colors = {
-  get RED() {
-    return (text) => chalk.red(text);
-  },
-  get GREEN() {
-    return (text) => chalk.green(text);
-  },
-  get BLUE() {
-    return (text) => chalk.blue(text);
-  },
-  get YELLOW() {
-    return (text) => chalk.yellow(text);
-  },
-  get MAGENTA() {
-    return (text) => chalk.magenta(text);
-  },
-  get CYAN() {
-    return (text) => chalk.cyan(text);
-  },
-  get WHITE() {
-    return (text) => chalk.white(text);
-  },
-  get GRAY() {
-    return (text) => chalk.gray(text);
-  },
-  get RESET() {
-    return (text) => chalk.reset(text);
-  },
-};
+const colors = require("./modules/colors");
 
 const commander_program = new Command();
 commander_program.requiredOption("--file <path>", "File to interpret");
 commander_program.requiredOption("--libarys <path>", "Libarys directory");
+commander_program.option("--terminalInput", "Lets you type single lines into the terminal", false);
 commander_program.parse(process.argv);
 
 const script_args = commander_program.opts();
@@ -64,7 +37,8 @@ global.KittyCodeCoreFunctions = {
 
 // shut the fuck up
 process.on('uncaughtException', (error) => {
-    console.log(`${colors.YELLOW("[Intertreter]")} ${colors.RED("Something went very terribly wrong. Unhandled interpreter error:")} ${error}`);
+    console.log(`${colors.YELLOW("[Interpreter]")} ${colors.RED("Something went very terribly wrong. Unhandled interpreter error:")} ${error}`);
+    process.exit(1);
 })
 
 const functions = [
@@ -133,7 +107,27 @@ console.log(colors.GREEN("KittyCode Loaded - Version 0.1.0"));
 console.log(colors.YELLOW("Libarys Directory Is: " + libarysDirectory));
 console.log(colors.MAGENTA("---SCRIPT START---") + colors.RESET(""));
 
+if (script_args.terminalInput) {
+  console.log(colors.CYAN("Type 'exit' to quit the interpreter."));
+
+  const rl = require("readline").createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  rl.on("line", (line) => {
+    if (line.trim() === "exit") {
+      rl.close();
+    } else {
+      interpretLine(line);
+    }
+  });
+}
+
 fs.access(filePath, fs.constants.R_OK, (err) => {
+  if (script_args.terminalInput) {
+    return;
+  }
   if (err) {
     console.error(
       `${colors.YELLOW("[Interpreter]")} ${colors.RED(
